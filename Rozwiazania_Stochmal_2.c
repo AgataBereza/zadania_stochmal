@@ -2,6 +2,100 @@
 #include <stdlib.h>
 #include <math.h>
 
+// Jest to funkcja pomocnicza u¿ywana w zadaniu 2_17 w celu obliczenia NWD
+int NWD(int a, int b){
+	int i, max, nwd = 1;
+	max = a < b ? a : b;
+	for(i=1; i<=max; i++){
+		if(a%i==0 && b%i==0){
+			nwd=i;
+		}
+	}
+	return nwd;	
+}
+
+/*
+	2.17  	Wczytaj dwie liczby naturalne i znajdz:
+	a)		najwiekszy wspolny dzielnik tych liczb (NWD)
+	b)		najmniejsz¹ wspóln¹ wielokrotnoœæ tych liczb (NWW)
+	
+*/
+void zad_2_17_ab() {
+	int i, a, b, nww=0, nwd=1, pomocznicza;
+	printf("Podaj pierwsz¹ liczbê naturln¹ a:\n");
+	scanf("%d", &a);
+	printf("Podaj drug¹ liczbê naturaln¹ b:\n");
+	scanf("%d", &b);
+	if(a == b){
+		printf("Liczby a=%d i b=%d s¹ sobie równe wiêc ich s¹ ich w³asnymi NWW i NWD.\n",a,b);
+	} else if (a==0 || b==0){
+		printf("Co najmniej jedna z podanych liczb jest równa 0, wiêc nie maj¹ ani NWW ani NWD.\n");
+	} else {
+		nwd=NWD(a,b);
+		printf("Liczby a=%d i b=%d maj¹ NWD=%d.\n",a,b,nwd);
+	}
+	
+}
+
+
+
+/*
+	2.16  SprawdŸ czy wczytane trzy liczby rzeczywise, dodatnie a,b,c mog¹ tworzyæ trójk¹t, tzn. czy spe³nione s¹ jednoczeœnie relacje:
+		a<b+c, b<c+a, c<b+a
+	
+*/
+void zad_2_16() {
+	double a, b, c;
+	printf("Podaj pierwsz¹ liczbê rzeczywist¹ a:\n");
+	scanf("%lf", &a);
+	printf("Podaj drug¹ liczbê rzeczywist¹ b:\n");
+	scanf("%lf", &b);
+	printf("Podaj trzeci¹ liczbê rzeczywist¹ c:\n");
+	scanf("%lf", &c);
+	if(a<b+c && b<c+a && c<b+a){
+		printf("Podane liczby mog¹ utworzyc trójk¹t.\n");
+	} else {
+		printf("Nie da rady.\n");
+	}
+}
+
+
+// Jest to funkcja pomocnicza u¿ywana w zadaniu 2_15 w celu obliczenia sumy dzielników danej liczby
+int suma_dzielnikow(int liczba){
+	int i, suma = 0;
+	if(liczba == 1){
+		return 1;
+	}
+	while(liczba != 1){
+		for(i=1; i<=liczba; i++){
+			if(liczba % i ==0){
+				suma+=i;
+				liczba/=i;
+			}
+		}
+	}
+	return suma;	
+}
+
+/*
+	2.15  	ZnajdŸ naturaln¹ liczbê nale¿¹c¹ do przedzia³u 1-10000, której suma podzielników jest maksymalna- co to s¹ podzielniki?
+			W matematyce s¹ tylko dzielniki.
+	
+			Sprawdzator liczb pierwszych: https://calculla.pl/liczba_pierwsza
+	
+*/
+void zad_2_15() {
+	int i, min = 1, max = 10000, pomocnicza = 0, maksymalna = 0, liczba;
+	for(i = min; i <= max; i++){
+		pomocnicza = suma_dzielnikow(i);		// w tym wierszu wo³amy dodatkow¹ funkcjê "suma_dzielnikow", która oblicza nam sumê dzielników dla podanej liczby
+		if(pomocnicza > maksymalna){			// je¿eli obliczona suma jest wiêksza ni¿ dotyczasowa,
+			maksymalna = pomocnicza;			// to zastêujêmy dotychczasow¹ sumê
+			liczba = i;							// a do zmiennej"liczba" przypisujemy aktualnie sprawdzan¹ liczbê: i
+		}
+	}
+	printf("Liczba, która ma najwiêksz¹ sumê podzielników równ¹ %d to %d.\n", maksymalna, liczba);
+}
+
 /*
 	2.14  SprawdŸ podzielnoœæ wczytanej liczby naturalnej n przez zadan¹ liczbê naturaln¹ k
 	
@@ -706,6 +800,9 @@ int main(int argc, char *argv[]) {
 	//zad_2_12_abc();
 	//zad_2_13();
 	//zad_2_14();
+	//zad_2_15();
+	//zad_2_16();
+	zad_2_17_ab();
 
 
 	return 0;
