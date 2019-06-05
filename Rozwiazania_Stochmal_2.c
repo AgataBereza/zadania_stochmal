@@ -2,12 +2,409 @@
 #include <stdlib.h>
 #include <math.h>
 
+/*
+	2.29	Dysponujemy zestawem dowolnej iloœci banknotow o nomina³ach: 1, 2, 5, 10, 20, 50 i 100 z³.
+			Podaæ, jak wyp³aciæ n z³ bior¹c najmniejsz¹ iloœæ banknotów.
+			
+			Pewnie mo¿na to zrobiæ lepiej, ja to zrobi³am ³opatologicznie.
+			
+*/
+void zad_2_29() {
+	int n, pomocnicza, suma=0;
+	printf("Podaj liczbe naturalna n:\n");
+	scanf("%d", &n);
+	pomocnicza = n;
+	while(suma != n){
+		if(pomocnicza >= 100){
+			suma+=100;
+			pomocnicza-=100;
+			printf("100, ");
+			continue;
+		} 
+		if(pomocnicza >= 50){
+			suma+=50;
+			pomocnicza-=50;
+			printf("50, ");
+			continue;
+		}
+		if(pomocnicza >= 20){
+			suma+=20;
+			pomocnicza-=20;
+			printf("20, ");
+			continue;
+		}
+		if(pomocnicza >= 10){
+			suma+=10;
+			pomocnicza-=10;
+			printf("10, ");
+			continue;
+		}
+		if(pomocnicza >= 5){
+			suma+=5;
+			pomocnicza-=5;
+			printf("5, ");
+			continue;
+		}
+		if(pomocnicza >= 2){
+			suma+=2;
+			pomocnicza-=2;
+			printf("2, ");
+			continue;
+		} else {
+			suma+=1;
+			pomocnicza-=1;
+			printf("1, ");
+			continue;
+		}
+	}	
+}
+
+/*
+	2.28	Wyznacz pierwiastek kwadratowy z zadanej liczby A, stosuj¹c algorytm Herona.
+			W pierwszym kroku przybli¿amy wartoœæ sqrt(A) liczb¹ a1. Jeœli a1< sqrtA), to A/a1 > sqrt(A),
+			i na odwrót: jeœli a1 > sqrt(A), to A/a1 < sqrt(A). Zatem dok³adna wartoœæ pierwiastka le¿y miêdzy wartoœciami
+			a1 i A/a1, wiêc kolejne przybli¿enie piarwiastka mo¿e byæ wziête jako œrednia arytmetyczna obu krañców przedzia³u:
+			a2=(a1+A/a1)/2. Kolejne przybli¿enia mo¿emy zapisaæ jako an+1=(an+A/an)/2. W obliczeniach przyjmij dok³adnoœæ e np 10^(-6)
+			rozumian¹ jako ró¿nicê miêdzy liczbami an i A/an.
+			
+*/
+void zad_2_28() {
+	double a, x, alternatywa, blad, epsilon; 
+	printf("Podaj liczbe rzeczywista, z ktorej chcesz obliczyc pierwiastek kwadratowy: \n");
+	scanf("%lf",&a);
+	/*epsilon to bardzo mala liczba, im mniejsza tym dokladniejszy wynik uzyskujemy
+	zapis 1e-15 jest rownoznaczny z 
+	*/
+	epsilon = 1e-15;
+	x=1.0;
+	do {
+		x=(x+(a/x))/2.0;
+	} while (fabs((x-(a/x))) >= x*epsilon);
+	
+	printf("Pierwiastek kwadratowy z liczby %lf wynosi %lf.\n",a,x);
+	alternatywa=sqrt(a);
+	blad=(fabs(alternatywa-x))/alternatywa;
+	printf("Blad wzgledny wynosi %lf.\n",blad);	
+}
+
+
+int sumaDzielnikowWlasciwych(int liczba){
+	int i, suma = 0;
+	if(liczba == 1){
+		return 1;
+	}
+	for(i=1; i<liczba; i++){
+		if(liczba % i ==0){
+			suma+=i;
+		}
+	}
+	return suma;
+}
+
+
+/*
+	2.27	Dana jest liczba naturana n. ZnaleŸæ wszystkie liczby naturalne k mniejsze od n,
+			dla których suma podzielników k jest równa danej liczbie k.
+			
+			Liczba doskona³a – liczba naturalna, która jest sum¹ wszystkich swych dzielników w³aœciwych 
+			(to znaczy od niej mniejszych). Najmniejsz¹ liczb¹ doskona³¹ jest 6, poniewa¿ 6 = 3 + 2 + 1. 
+			Nastêpn¹ jest 28 (28 = 14 + 7 + 4 + 2 + 1), a kolejne to 496, 8128, 33550336, 8589869056 i 137438691328.
+			
+*/
+void zad_2_27() {
+	int n, k, suma;
+	printf("Podaj liczbe naturalna n:\n");
+	scanf("%d", &n);
+	printf("Liczby mniejsze od n=%d, których suma podzielników jest równa samej tej liczbie to:\n",n);
+	for(k=1; k<n; k++){
+		suma = sumaDzielnikowWlasciwych(k);
+		if(suma == k){
+			printf("Liczba: %d.\n", k);
+		}
+	}	
+}
+
+
+//Jeœli liczba jest pierwsza to zwracamy 1, w przeciwnym wypadku 0
+int jestPierwsza(int liczba){
+	int i;
+	for(i=2;i<liczba;i++){
+		if(liczba % i == 0){
+			return 0;
+		}
+	}
+	return 1;
+}
+
+/*
+	2.26	Dane s¹ 2 liczby naturalne a i b (b > a). ZnaleŸæ wszystkie liczby pierwsze miêdzy a i b.
+			
+*/
+void zad_2_26() {
+	int i, a, b;
+	printf("Podaj liczbe naturalna a:\n");
+	scanf("%d", &a);
+	printf("Podaj liczbe naturalna b > a:\n");
+	scanf("%d", &b);
+	printf("Miêdzy liczbami a=%d i b=%d wystêpujê nastêpuj¹ce liczby pierwsze:\n",a,b);
+	for(i=a+1; i<b; i++){
+		if(jestPierwsza(i) == 1){
+			printf("%d, ",i);
+		}
+	}	
+}
+
+/*
+	2.25	Twierdzenie lagrange'a mówi, ¿e ka¿d¹ naturaln¹ liczbê n mo¿na zapisaæ za pomoc¹ sumy kwadratów
+			4 liczb naturalnych (wraz z zerem): n = x^2 + y^2 + z^2 + t^2. ZnaleŸæ takie liczby dla zadanego n. 
+			
+*/
+void zad_2_25() {
+	int n, x=0, y=0, z=0, t=0;
+	char czyZnaleziono = 'n';
+	printf("Podaj liczbe naturalna:\n");
+	scanf("%d", &n);
+	for(x=0; x<=n; x++){
+		for(y=0; y<=n; y++){
+			for(z=0; z<=n; z++){
+				for(t=0; t<=n; t++){
+					if((x*x)+(y*y)+(z*z)+(t*t) == n){
+						printf("n = %d = %d^2 + %d^2 + %d^2 + %d^2..\n", n, x, y, z, t);
+						czyZnaleziono = 't';
+						break;
+					}
+				}
+			}
+			
+		}
+	}
+	if(czyZnaleziono == 'n'){
+		printf("Nie znaleziono takiej liczby.\n");
+	}	
+}
+
+/*
+	2.24	Dana jest liczba naturalna n. Czy mo¿na j¹ przedstawiæ za pomoc¹ sumy kwadratów 3 liczb naturalnych:
+			n = x^2 + y^2 + z^2, Jeœli mo¿na to:
+	a)		znaleŸæ takie liczby x, y, z
+	b)		znaleŸæ wszystkie takie trójki
+	
+	Uwaga: Program od razu znajduje wszystkie trójki liczb i na bie¿¹co wypisuje je na ekran
+			
+*/
+void zad_2_24_ab() {
+	int i, j, k, n, x=0, y=0, z=0;
+	char czyZnaleziono = 'n';
+	printf("Podaj liczbe naturalna:\n");
+	scanf("%d", &n);
+	for(i=0; i<=n; i++){
+		x=i;
+		for(j=0; j<=n; j++){
+			y=j;
+			for(k=0; k<=n; k++){
+				if((x*x)+(y*y)+(z*z) == n){
+					printf("n = %d = %d^2 + %d^2 + %d^2.\n", n, x, y, z);
+					czyZnaleziono = 't';
+					break;
+				}
+			}
+			
+		}
+	}
+	if(czyZnaleziono == 'n'){
+		printf("Nie znaleziono takiej liczby.\n");
+	}	
+}
+
+/*
+	2.23	Dan¹ liczbê naturaln¹ n przedstawiæ w postaci sumy szeœcianów 2 liczb naturalnych x i y (x, y): n = x^3+y^3
+			
+*/
+void zad_2_23() {
+	int i, j, n, x=0, y=0;
+	char czyZnaleziono = 'n';
+	printf("Podaj liczbe naturalna:\n");
+	scanf("%d", &n);
+	for(i=0; i<=n; i++){
+		x=i;
+		for(j=0; j<=n; j++){
+			y=j;
+			if((x*x*x)+(y*y*y) == n){
+				printf("n = %d = %d^3 + %d^3.\n", n, x, y);
+				czyZnaleziono = 't';
+				break;
+			}
+			
+		}
+	}
+	if(czyZnaleziono == 'n'){
+		printf("Nie znaleziono takiej liczby.\n");
+	}	
+}
+
+/*
+	2.22	Dana jest liczba naturalna n. Czy mozna j¹ zapisaæ za pomoc¹ sumy kwadratów 2 liczb naturalnych: n = x^2 + y^2?
+			Jeœli mo¿na to:
+	a)		znaleŸæ tak¹ parê liczb x i y
+	b)		znaleŸæ wszystkie pary takich liczb
+	
+	Uwaga: Program od razu znajduje wszystkie pary liczb i na bie¿¹co wypisuje je na ekran
+*/
+void zad_2_22_ab() {
+	int i, j, n, x=0, y=0;
+	char czyZnaleziono = 'n';
+	printf("Podaj liczbe naturalna:\n");
+	scanf("%d", &n);
+	for(i=0; i<=n; i++){
+		x=i;
+		for(j=0; j<=n; j++){
+			y=j;
+			if((x*x)+(y*y) == n){
+				printf("Dla liczby n=%d znaleziono x=%d i y=%d.\n", n, x, y);
+				czyZnaleziono = 't';
+				break;
+			}
+			
+		}
+	}
+	if(czyZnaleziono == 'n'){
+		printf("Nie znaleziono takiej liczby.\n");
+	}	
+}
+
+
+/*
+	2.21	Oblicz przybli¿on¹ wartoœæ nieskoñczonych szeregów. Obliczenia przerwij w momencie,
+			gdy wartoœæ bezwzglêdna kolejnego wyrazu szeregu bêdzie mniejsza od zadanej dok³adnoœci e=10^(-7)
+	d)		suma od i=1 do nieskoñczonoœci (-2)^i/i! - w tym zadaniu nalezy zauwa¿yæ,
+			ze kazdy kolejny wyraz to poprzedni wyraz pomno¿ony przez (-2/i) czyli np. i1=(-2.0)/i to i2=i1*((-2)/i)
+*/
+void zad_2_21_d() {
+	int i = 1;
+	double wyraz = 0, suma = 0, e=(1.0/pow(10,7));
+	wyraz=pow(-2, i)/i;
+	while(fabs(wyraz) > e){
+		i++;
+		wyraz = wyraz*((-2.0)/i);
+		suma += wyraz;
+		printf("suma %lf, wyraz %lf\n", suma, wyraz);
+
+	}
+	printf("Przybli¿ona suma to: %lf.\n", suma);
+}
+
+/*
+	2.21	Oblicz przybli¿on¹ wartoœæ nieskoñczonych szeregów. Obliczenia przerwij w momencie,
+			gdy wartoœæ bezwzglêdna kolejnego wyrazu szeregu bêdzie mniejsza od zadanej dok³adnoœci e=10^(-7)
+	c)		suma od i=1 do nieskoñczonoœci 1/i(i+1)
+*/
+void zad_2_21_c() {
+	int i = 1;
+	double mianownik, suma = 0, wyraz = 1, e=(1.0/pow(10,7));
+	while(fabs(wyraz) > e){
+		mianownik = i*(i+1);
+		wyraz = 1.0/mianownik;
+		suma += wyraz;
+		i++;
+	}
+	printf("Przybli¿ona suma to: %lf.\n", suma);
+}
+
+//Program pomocniczy licz¹cy silniê z liczby
+int silnia(int n) {
+	int i, silnia = 1;
+	for(i = 1; i <= n; i++){
+		silnia*=i;
+	}
+	return silnia;	
+}
+
+/*
+	2.21	Oblicz przybli¿on¹ wartoœæ nieskoñczonych szeregów. Obliczenia przerwij w momencie,
+			gdy wartoœæ bezwzglêdna kolejnego wyrazu szeregu bêdzie mniejsza od zadanej dok³adnoœci e=10^(-7)
+	b)		suma od i=1 do nieskoñczonoœci (-1)^i/i!
+*/
+void zad_2_21_b() {
+	int i = 1;
+	double licznik, mianownik, suma = 0, wyraz = 1, e=(1.0/pow(10,7));
+	while(fabs(wyraz) > e){
+		licznik = pow((-1.0), i);
+		mianownik = silnia(i);
+		wyraz = licznik/mianownik;
+		suma += wyraz;
+		i++;
+	}
+	printf("Przybli¿ona suma to: %lf.\n", suma);
+}
+
+/*
+	2.21	Oblicz przybli¿on¹ wartoœæ nieskoñczonych szeregów. Obliczenia przerwij w momencie,
+			gdy wartoœæ bezwzglêdna kolejnego wyrazu szeregu bêdzie mniejsza od zadanej dok³adnoœci e=10^(-7)
+	a)		suma od i=1 do nieskoñczonoœci 1/i^2
+*/
+void zad_2_21_a() {
+	int i = 1;
+	double suma = 0, wyraz = 1, e=(1.0/pow(10,7));
+	while(fabs(wyraz) > e){
+		wyraz = 1.0/(i*i);
+		suma += wyraz;
+		i++;
+	}
+	printf("Przybli¿ona suma to: %lf.\n", suma);
+}
+
+/*
+	2.20 	Dana jest naturalna liczba n. ZnajdŸ:
+	a)		liczbê jej cyfr
+	b)		sumê jej cyfr
+	c)		pierwsz¹ (najbardziej znacz¹c¹) cyfrê tej liczby
+*/
+void zad_2_20_abc() {
+	int n, liczbaCyfr = 0, sumaCyfr=0, ostatnia;
+	printf("Podaj liczbe naturalna:\n");
+	scanf("%d", &n);
+	
+	printf("Dla danej liczby n=%d.\n", n);
+	if(n == 0){
+		printf("Podana liczba to 0. Suma cyfr to 0, liczba cyfr to 1, najbardziej znacz¹ca to 0.\n");
+	} else {
+		while(n != 0){				// jak wykonujemy operacje na typie int, to jeœli zostanie nam ostatnia liczba z zakresu 0-9, po podzieleniu przez 10 bedzie rowna zero
+			liczbaCyfr++;			// przy ka¿dym obrocie pêtli zwiêkszamy iloœæ cyfr
+			ostatnia = n % 10;		// ze wstêpu do programowania wiemy, ¿e aby uzyskaæ skrajnie praw¹ cyfrê nale¿y zwróciæ resztê z dzielenia przez 10
+			sumaCyfr += ostatnia;	// skoro zwróciliœmy skrajnie praw¹, to teraz dodajemy j¹ do sumy cyfr
+			n = n / 10;				// nasze "n" dzielimy przez 10, by w nastêpnej iteracji sprawdziæ co zosta³o
+		}
+		printf("Liczba cyfr to: %d, suma cyfr to: %d, najbardziej znacz¹ca cyfra to: %d.\n",liczbaCyfr,sumaCyfr,ostatnia);
+	}
+}
+
+/*
+	2.18/2.19  ZnajdŸ wszystkie dzielniki/dzielniki pierwsza podanej liczby naturalnej
+	
+*/
+void zad_2_18() {
+	int i, n;
+	printf("Podaj pierwsz¹ liczbê naturaln¹ n:\n");
+	scanf("%d", &n);
+	printf("Kolejne podzielniki danej liczby n=%d to: \n", n);
+	i = 2;
+	while(n != 1){
+		if(n % i == 0){
+			n = n / i;
+			printf("%d\n", i);
+		} else {
+			i++;
+		}	
+	}
+}
+
+
 // Jest to funkcja pomocnicza u¿ywana w zadaniu 2_17 w celu obliczenia NWD
 int NWD(int a, int b){
 	int i, max, nwd = 1;
-	max = a < b ? a : b;
-	for(i=1; i<=max; i++){
-		if(a%i==0 && b%i==0){
+	max = a < b ? a : b; 		// zapis ten oznacza, ¿e je¿eli a<b to do zmiennej max podstawiamy "a", w przeciwnym wypadku "b"
+	for(i=1; i<=max; i++){		// iteracjê rozpoczynami od 1 poniewa¿ 0 nie interesuje nas jako dzielnik
+		if(a%i==0 && b%i==0){	// je¿eli obie liczby dziel¹ siê przez "i" bez reszty, to znaczy, ¿e "i" jest ich dzielnikiem
 			nwd=i;
 		}
 	}
@@ -18,6 +415,8 @@ int NWD(int a, int b){
 	2.17  	Wczytaj dwie liczby naturalne i znajdz:
 	a)		najwiekszy wspolny dzielnik tych liczb (NWD)
 	b)		najmniejsz¹ wspóln¹ wielokrotnoœæ tych liczb (NWW)
+	
+	Znaj¹c NWD mo¿na ³atwo obliczyæ NWW ze wzoru NWW(a,b)=a*b/NWD(a,b)
 	
 */
 void zad_2_17_ab() {
@@ -32,7 +431,8 @@ void zad_2_17_ab() {
 		printf("Co najmniej jedna z podanych liczb jest równa 0, wiêc nie maj¹ ani NWW ani NWD.\n");
 	} else {
 		nwd=NWD(a,b);
-		printf("Liczby a=%d i b=%d maj¹ NWD=%d.\n",a,b,nwd);
+		nww=a*b/nwd;
+		printf("Liczby a=%d i b=%d maj¹ NWD=%d i NWW=%d.\n",a,b,nwd,nww);
 	}
 	
 }
@@ -66,20 +466,25 @@ int suma_dzielnikow(int liczba){
 	if(liczba == 1){
 		return 1;
 	}
+	i = 2;
 	while(liczba != 1){
-		for(i=1; i<=liczba; i++){
-			if(liczba % i ==0){
-				suma+=i;
-				liczba/=i;
-			}
+		if(liczba % i == 0){
+			suma+=i;
+			liczba/=i;
+		} else {
+			i++;
 		}
 	}
-	return suma;	
+	return suma;
 }
+		
+
 
 /*
-	2.15  	ZnajdŸ naturaln¹ liczbê nale¿¹c¹ do przedzia³u 1-10000, której suma podzielników jest maksymalna- co to s¹ podzielniki?
+	2.15  	ZnajdŸ naturaln¹ liczbê nale¿¹c¹ do przedzia³u 1-10000, której suma podzielników jest maksymalna - co to s¹ podzielniki?
 			W matematyce s¹ tylko dzielniki.
+			
+			UWAGA! 1 nie jest uznawana ani za liczbê pierwsz¹, ani z³o¿on¹ - nie wystêpuje w rozk³adzie na czynniki pierwsze
 	
 			Sprawdzator liczb pierwszych: https://calculla.pl/liczba_pierwsza
 	
@@ -802,7 +1207,22 @@ int main(int argc, char *argv[]) {
 	//zad_2_14();
 	//zad_2_15();
 	//zad_2_16();
-	zad_2_17_ab();
+	//zad_2_17_ab();
+	//zad_2_18(); // zadanie 2.19 zostaje pominiête, w zwi¹zku z brakiem jasnej definicji jaka jest ró¿nica miêdzy podzielnikiem, a podzielnikiem pierwszym
+	//zad_2_20_abc();
+	//zad_2_21_a();
+	//zad_2_21_b();
+	//zad_2_21_c();
+	//zad_2_21_d();
+	//zad_2_22_ab();
+	//zad_2_23();
+	//zad_2_24_ab();
+	//zad_2_25();
+	//zad_2_26();
+	//zad_2_27();
+	//zad_2_28();
+	zad_2_29();
+
 
 
 	return 0;
